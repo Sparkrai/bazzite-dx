@@ -1,5 +1,7 @@
 # bazzite-dx &nbsp; [![build-ublue](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml/badge.svg)](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml)
 
+This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin DX image.
+
 See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
 
 After setup, it is recommended you update this README to describe your custom image.
