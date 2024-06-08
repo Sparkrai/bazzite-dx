@@ -10,9 +10,9 @@ image-version: latest # latest is also supported if you want new updates ASAP
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
-  - type: files
-    files:
-      - usr: /usr # copies config/files/usr into your image's /usr.
+  # - type: files
+    # files:
+      # - usr: /usr # copies config/files/usr into your image's /usr.
                   # put configuration files you want in /etc/ on a booted system 
                   # in /usr/etc/ in the image. read more in files module reference.
 
