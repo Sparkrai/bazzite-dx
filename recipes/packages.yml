@@ -113,6 +113,4 @@ modules:
       - ubuntu-family-fonts
       - udica
       - virt-manager
-      - virt-viewe
-    remove:
-      - podman-docker
+      - virt-viewer
