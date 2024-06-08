@@ -54,7 +54,7 @@ modules:
       - kde-runtime-docs
       - kdenetwork-filesharing
       # - kdeplasma-addons Already included in Bazzite
-      - plasma-wallpapers-dynami
+      - plasma-wallpapers-dynamic
 
       # DX Bluefin packages
       - adobe-source-code-pro-fonts

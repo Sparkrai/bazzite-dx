@@ -10,12 +10,6 @@ image-version: latest # latest is also supported if you want new updates ASAP
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
-  # - type: files
-    # files:
-      # - usr: /usr # copies config/files/usr into your image's /usr.
-                  # put configuration files you want in /etc/ on a booted system 
-                  # in /usr/etc/ in the image. read more in files module reference.
-
 # Copy Bluefin-CLI
   - type: copy
     from: ghcr.io/ublue-os/bluefin-cli
@@ -25,6 +19,11 @@ modules:
     from: ghcr.io/ublue-os/bluefin-cli
     src: /usr/share/bash-prexec
     dest: /usr/share/bash-prexec
+
+# Activate RPM Fusion repos
+  - type: script
+    scripts:
+      - copr-repos.sh
 
 # Install packages from Bluefin and Bluefin DX
   - from-file: packages.yml
@@ -38,12 +37,17 @@ modules:
       - "# shellcheck disable=SC2016"
       - "echo 'eval \"$(starship init bash)\"' >> /etc/bashrc"
 
-
 # alternatives cannot create symlinks on its own during a container build
   - type: script
     snippets:
       - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"
 
+# Activate RPM Fusion repos
+  - type: script
+    scripts:
+      - quadlets.sh
+
+# Install fonts
   - type: fonts
     fonts:
       nerd-fonts:
@@ -57,6 +61,7 @@ modules:
         - Roboto
         - Open Sans
 
+# Enable systemd services
   - type: systemd
     system:
       enabled:
@@ -69,22 +74,10 @@ modules:
       enabled:
         - podman-auto-update.timer
 
-  # - type: default-flatpaks
-  #   notify: true # Send notification after install/uninstall is finished (true/false)
-  #   system:
-  #     # If no repo information is specified, Flathub will be used by default
-  #     # repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
-  #     # repo-name: flathub
-  #     # repo-title: "Flathub (system-wide)" # Optional; this sets the remote's user-facing name in graphical frontends like GNOME Software
-  #     install:
-  #       # - org.mozilla.firefox
-  #       # - org.gnome.Loupe
-  #       # - one.ablaze.floorp//lightning # This is an example of flatpak which has multiple branches in selection (flatpak//branch).
-  #     # Flatpak runtimes are not supported (like org.winehq.Wine//stable-23.08),
-  #     # only normal flatpak applications are (like Floorp Lightning web browser in this example).
-  #     # Installing different branches of the same Flatpak is not supported.
-  #     remove:
-  #     # - org.gnome.eog
+# Cleanup repos, etc...
+  - type: script
+    scripts:
+      - cleanup.sh
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
 
