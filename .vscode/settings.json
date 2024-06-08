@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "https://schema.blue-build.org/recipe-v1.json": "recipe.yml",
+        "https://schema.blue-build.org/recipe-v1.json": "*.yml"
+    }
+}
