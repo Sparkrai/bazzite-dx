@@ -1,11 +1,11 @@
 # image will be published to ghcr.io/<user>/<name>
 name: bazzite-dx
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin DX image.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 40 # latest is also supported if you want new updates ASAP
+base-image: ghcr.io/ublue-os/bazzite
+image-version: latest # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -16,17 +16,174 @@ modules:
                   # put configuration files you want in /etc/ on a booted system 
                   # in /usr/etc/ in the image. read more in files module reference.
 
+# Copy Bluefin-CLI
+  - type: copy
+    from: ghcr.io/ublue-os/bluefin-cli
+    src: /usr/bin/atuin
+    dest: /usr/bin/atuin
+  - type: copy
+    from: ghcr.io/ublue-os/bluefin-cli
+    src: /usr/share/bash-prexec
+    dest: /usr/share/bash-prexec
+
+# Install packages from Bluefin and Bluefin DX
   - type: rpm-ostree
     repos:
-      # - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-"${FEDORA_MAJOR_VERSION}"/ublue-os-staging-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/che/nerd-fonts/repo/fedora-"${FEDORA_MAJOR_VERSION}"/che-nerd-fonts-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/ublue-os/bling/repo/fedora-"${FEDORA_MAJOR_VERSION}"/ublue-os-bling-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-"${FEDORA_MAJOR_VERSION}"/ganto-lxc4-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/karmab/kcli/repo/fedora-"${FEDORA_MAJOR_VERSION}"/karmab-kcli-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/atim/ubuntu-fonts/repo/fedora-"${FEDORA_MAJOR_VERSION}"/atim-ubuntu-fonts-fedora-"${FEDORA_MAJOR_VERSION}".repo
+      - https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/repo/fedora-"${FEDORA_MAJOR_VERSION}"/hikariknight-looking-glass-kvmfr-fedora-"${FEDORA_MAJOR_VERSION}".repo
+
     install:
-      # - micro
-      # - starship
+      # Base Bluefin packages
+      - bash-color-prompt
+      - bcache-tools
+      - evtest
+      - epson-inkjet-printer-escpr
+      - epson-inkjet-printer-escpr2
+      - fastfetch
+      - firewall-config
+      - gcc
+      - glow
+      - gum
+      - hplip
+      - ifuse
+      - input-remapper
+      - libimobiledevice
+      - libxcrypt-compat
+      - lm_sensors
+      - make
+      - nerd-fonts
+      - playerctl
+      - printer-driver-brlaser
+      - pulseaudio-utils
+      - python3-pip
+      - rclone
+      - restic
+      - samba-dcerpc
+      - samba-ldb-ldap-modules
+      - samba-winbind-clients
+      - samba-winbind-modules
+      - samba
+      - stress-ng
+      - tmux
+      - usbmuxd
+      - wireguard-tools
+      - wl-clipboard
+      - zsh
+
+      # KDE packages
+      - skanpage
+      - libadwaita-qt5
+      - libadwaita-qt6
+      - kde-runtime-docs
+      - kdenetwork-filesharing
+      # - kdeplasma-addons Already included in Bazzite
+      - plasma-wallpapers-dynami
+
+      # DX Bluefin packages
+      - adobe-source-code-pro-fonts
+      - android-tools
+      - cascadia-code-fonts
+      - cockpit-machines
+      - cockpit-networkmanager
+      - cockpit-ostree
+      - cockpit-pcp
+      - cockpit-podman
+      - cockpit-selinux
+      - cockpit-storaged
+      - cockpit-system
+      - code
+      - containerd.io
+      - dbus-x11
+      - devpod
+      - docker-ce
+      - docker-ce-cli
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      - edk2-ovmf
+      - flatpak-builder
+      - genisoimage
+      - google-droid-sans-mono-fonts
+      - google-go-mono-fonts
+      - ibm-plex-mono-fonts
+      - incus
+      - incus-agent
+      - iotop
+      - jetbrains-mono-fonts-all
+      # - kcli
+      - libvirt
+      - lxc
+      - lxd-agent
+      - lxd
+      - mozilla-fira-mono-fonts
+      - p7zip-plugins
+      - p7zip
+      - podman-compose
+      - podman-tui
+      - podmansh
+      - powerline-fonts
+      - powertop
+      - qemu-char-spice
+      - qemu-device-display-virtio-gpu
+      - qemu-device-display-virtio-vga
+      - qemu-device-usb-redirect
+      - qemu-img
+      - qemu-system-x86-core
+      - qemu-user-binfmt
+      - qemu-user-static
+      - qemu
+      # - rocm-hip Already included in Bazzite
+      # - rocm-opencl
+      - ubuntu-family-fonts
+      - udica
+      - virt-manager
+      - virt-viewe
     remove:
-      # example: removing firefox (in favor of the flatpak)
-      # "firefox" is the main package, "firefox-langpacks" is a dependency
-      # - firefox
-      # - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+      - podman-docker
+
+# Install Starhip
+  - type: script
+    snippets:
+      - "curl -Lo /tmp/starship.tar.gz 'https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz'"
+      - "tar -xzf /tmp/starship.tar.gz -C /tmp"
+      - "install -c -m 0755 /tmp/starship /usr/bin"
+      - "# shellcheck disable=SC2016"
+      - "echo 'eval \"$(starship init bash)\"' >> /etc/bashrc"
+
+
+# alternatives cannot create symlinks on its own during a container build
+  - type: script
+    snippets:
+      - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"
+
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - FiraCode # don't add spaces or "Nerd Font" suffix.
+        - Hack
+        - SourceCodePro
+        - Terminus
+        - JetBrainsMono
+        - NerdFontsSymbolsOnly
+      google-fonts:
+        - Roboto
+        - Open Sans
+
+  - type: systemd
+    system:
+      enabled:
+        - rpm-ostree-countme.service
+        # - dconf-update.service Already in Bazzite
+        - docker.socket
+        - podman.socket
+        - swtpm-workaround.service
+    user:
+      enabled:
+        - podman-auto-update.timer
 
   - type: default-flatpaks
     notify: true # Send notification after install/uninstall is finished (true/false)
