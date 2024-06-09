@@ -31,7 +31,14 @@ modules:
 
 # Install Starhip and activate RPM Fusion repos
   - type: script
+    snippets:
+      - "find ${CONFIG_DIRECTORY}/bluefin/build_files -type f -exec chmod +x {} \\;" # Make bluefin scripts executable
+      - "IMAGE_VENDOR=${IMAGE_REGISTRY}"
+      - "FEDORA_MAJOR_VERSION=${OS_VERSION}"
+      - "IMAGE_FLAVOR=main"
+      - "BASE_IMAGE_NAME=bazzite"
     scripts:
+      - ../bluefin/build_files/shared/image-info.sh
       - fetch-install.sh
       - ../bluefin/build_files/base/fetch-quadlets.sh
 
@@ -69,11 +76,8 @@ modules:
 
 # Cleanup repos, etc...
   - type: script
-    snippets:
-      - "FEDORA_MAJOR_VERSION=${OS_VERSION}"
     scripts:
-      - ../bluefin/build_files/base/cleanup.sh
-      - ../bluefin/build_files/dx/cleanup-dx.sh
+      - cleanup.sh
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
 
