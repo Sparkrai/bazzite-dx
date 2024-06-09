@@ -10,15 +10,16 @@ image-version: latest # latest is also supported if you want new updates ASAP
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
-# Copy Bluefin-CLI
-  - type: copy
-    from: ghcr.io/ublue-os/bluefin-cli
-    src: /usr/bin/atuin
-    dest: /usr/bin/atuin
-  - type: copy
-    from: ghcr.io/ublue-os/bluefin-cli
-    src: /usr/share/bash-prexec
-    dest: /usr/share/bash-prexec
+  - type: containerfile
+    snippets:
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/bin/atuin /usr/bin/atuin
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/share/bash-prexec /usr/share/bash-prexec
+
+  - type: files
+    files:
+      - ../bluefin/system_files/shared/: /
+      - ../bluefin/system_files/kinoite/: /
+      - ../bluefin/system_files/dx/: /
 
 # Activate RPM Fusion repos
   - type: script
@@ -28,24 +29,16 @@ modules:
 # Install packages from Bluefin and Bluefin DX
   - from-file: packages.yml
 
-# Install Starhip
+# Install Starhip and activate RPM Fusion repos
   - type: script
-    snippets:
-      - "curl -Lo /tmp/starship.tar.gz 'https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz'"
-      - "tar -xzf /tmp/starship.tar.gz -C /tmp"
-      - "install -c -m 0755 /tmp/starship /usr/bin"
-      - "# shellcheck disable=SC2016"
-      - "echo 'eval \"$(starship init bash)\"' >> /etc/bashrc"
+    scripts:
+      - fetch-install.sh
+      - ../bluefin/build_files/base/fetch-quadlets.sh
 
 # alternatives cannot create symlinks on its own during a container build
   - type: script
     snippets:
       - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"
-
-# Activate RPM Fusion repos
-  - type: script
-    scripts:
-      - quadlets.sh
 
 # Install fonts
   - type: fonts
@@ -76,8 +69,11 @@ modules:
 
 # Cleanup repos, etc...
   - type: script
+    snippets:
+      - "FEDORA_MAJOR_VERSION=${OS_VERSION}"
     scripts:
-      - cleanup.sh
+      - ../bluefin/build_files/base/cleanup.sh
+      - ../bluefin/build_files/dx/cleanup-dx.sh
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
 
