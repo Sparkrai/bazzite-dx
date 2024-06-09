@@ -39,6 +39,9 @@ jobs:
           large-packages: true
           docker-images: false
           swap-storage: true
+      - name: Update submodule
+        run: |
+          git submodule update  --init --recursive --remote -f
        # the build is fully handled by the reusable github action
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
