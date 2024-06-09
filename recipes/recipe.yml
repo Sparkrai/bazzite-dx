@@ -12,6 +12,10 @@ image-version: latest # latest is also supported if you want new updates ASAP
 modules:
   - type: containerfile
     snippets:
+      - ARG IMAGE_VENDOR="${IMAGE_REGISTRY}"
+      - ARG FEDORA_MAJOR_VERSION="${OS_VERSION}"
+      - ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-main}"
+      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite}"
       - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/bin/atuin /usr/bin/atuin
       - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/share/bash-prexec /usr/share/bash-prexec
 
@@ -33,10 +37,6 @@ modules:
   - type: script
     snippets:
       - "find ${CONFIG_DIRECTORY}/bluefin/build_files -type f -exec chmod +x {} \\;" # Make bluefin scripts executable
-      - "IMAGE_VENDOR=${IMAGE_REGISTRY}"
-      - "FEDORA_MAJOR_VERSION=${OS_VERSION}"
-      - "IMAGE_FLAVOR=main"
-      - "BASE_IMAGE_NAME=bazzite"
     scripts:
       - ../bluefin/build_files/shared/image-info.sh
       - fetch-install.sh
