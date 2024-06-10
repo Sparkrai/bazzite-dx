@@ -21,9 +21,15 @@ modules:
 
   - type: files
     files:
-      - ../bluefin/system_files/shared/: /
-      - ../bluefin/system_files/kinoite/: /
-      - ../bluefin/system_files/dx/: /
+      - ../bluefin/system_files/shared: /
+      - ../bluefin/system_files/kinoite/usr/bin: /usr/bin
+      - ../bluefin/system_files/kinoite/usr/etc/flatpak: /usr/etc/flatpak
+      - ../bluefin/system_files/kinoite/usr/etc/profile.d/ksshaskpass.sh: /usr/etc/profile.d
+      - ../bluefin/system_files/kinoite/usr/share/applications: /usr/share/applications
+      - ../bluefin/system_files/kinoite/usr/share/kglobalaccel: /usr/share/kglobalaccel
+      - ../bluefin/system_files/dx: /
+      - shared: /
+      - kinoite: /
 
 # Activate RPM Fusion repos
   - type: script
