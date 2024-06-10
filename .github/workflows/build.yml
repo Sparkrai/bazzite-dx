@@ -39,6 +39,10 @@ jobs:
           large-packages: true
           docker-images: false
           swap-storage: true
+      - name: Checkout submodule
+        uses: actions/checkout@v4
+        with:
+          submodules: true
        # the build is fully handled by the reusable github action
       - name: Build Custom Image
         uses: blue-build/github-action@v1.6
