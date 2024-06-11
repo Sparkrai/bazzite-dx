@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"command": "bluebuild build -B=podman -I=podman",
+			"problemMatcher": [
+				"$bluebuild"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "bluebuild: build"
+		}
+	]
+}
