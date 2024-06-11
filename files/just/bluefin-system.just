@@ -100,7 +100,7 @@ configure-shell ACTION="":
       printf "${USER}'s shell is now %s.\n" "$(cat /etc/passwd | grep ":$UID:" | cut '-d:' '-f7')"
     fi
 
-alias gnome-vrr := toggle-gnome-vrr
+# alias gnome-vrr := toggle-gnome-vrr
 
 # Enable or Disable Gnome-VRR
 # toggle-gnome-vrr:
