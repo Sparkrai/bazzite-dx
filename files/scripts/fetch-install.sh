@@ -11,3 +11,6 @@ echo 'eval "$(starship init bash)"' >> /etc/bashrc
 
 # Topgrade Install
 pip install --prefix=/usr topgrade
+
+# Consolidate Just Files
+find /tmp/files/just -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just
