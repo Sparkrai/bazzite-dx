@@ -8,6 +8,7 @@ tar -xzf /tmp/starship.tar.gz -C /tmp
 install -c -m 0755 /tmp/starship /usr/bin
 # shellcheck disable=SC2016
 echo 'eval "$(starship init bash)"' >> /etc/bashrc
+echo 'eval "$(starship init bash)"' >> /etc/zshrc
 
 # Topgrade Install
 pip install --prefix=/usr topgrade

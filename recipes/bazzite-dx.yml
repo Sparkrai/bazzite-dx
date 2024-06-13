@@ -1,0 +1,100 @@
+# image will be published to ghcr.io/<user>/<name>
+name: bazzite-dx
+# description will be included in the image's metadata
+description: This is my custom Bazzite image that tries to add all the development capabilities from the Aurora DX image.
+
+# the base image to build on top of (FROM) and the version tag to use
+base-image: ghcr.io/ublue-os/bazzite
+image-version: latest # latest is also supported if you want new updates ASAP
+
+# module configuration, executed in order
+# you can include multiple instances of the same module
+modules:
+  - type: containerfile
+    snippets:
+      - ARG IMAGE_VENDOR="${IMAGE_REGISTRY}"
+      - ARG FEDORA_MAJOR_VERSION="${OS_VERSION}"
+      - ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-main}"
+      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite}"
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/bin/atuin /usr/bin/atuin
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/share/bash-prexec /usr/share/bash-prexec
+
+  - type: files
+    files:
+      - ../bluefin/system_files/shared: /
+      - ../bluefin/system_files/kinoite/usr/bin: /usr/bin
+      - ../bluefin/system_files/kinoite/usr/etc/flatpak: /usr/etc/flatpak
+      - ../bluefin/system_files/kinoite/usr/etc/profile.d/ksshaskpass.sh: /usr/etc/profile.d
+      - ../bluefin/system_files/kinoite/usr/share/applications: /usr/share/applications
+      - ../bluefin/system_files/kinoite/usr/share/kglobalaccel: /usr/share/kglobalaccel
+      - ../bluefin/system_files/dx: /
+      - shared: /
+      - kinoite: /
+
+# Activate RPM Fusion repos
+  - type: script
+    scripts:
+      - copr-repos.sh
+
+# Install packages from Bluefin and Bluefin DX
+  - from-file: packages.yml
+
+# Install KDE Packages
+  - type: rpm-ostree
+    install:
+      - skanpage
+      - libadwaita-qt5
+      - libadwaita-qt6
+      - kde-runtime-docs
+      - kdenetwork-filesharing
+      # - kdeplasma-addons Already included in Bazzite
+      - plasma-wallpapers-dynamic
+
+# Install Starhip and activate RPM Fusion repos
+  - type: script
+    snippets:
+      - "find ${CONFIG_DIRECTORY}/bluefin/build_files -type f -exec chmod +x {} \\;" # Make bluefin scripts executable
+    scripts:
+      - ../bluefin/build_files/shared/image-info.sh
+      - fetch-install.sh
+      - ../bluefin/build_files/base/fetch-quadlets.sh
+
+# alternatives cannot create symlinks on its own during a container build
+  - type: script
+    snippets:
+      - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"
+
+# Install fonts
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - FiraCode # don't add spaces or "Nerd Font" suffix.
+        - Hack
+        - SourceCodePro
+        - Terminus
+        - JetBrainsMono
+        - NerdFontsSymbolsOnly
+      google-fonts:
+        - Roboto
+        - Open Sans
+
+# Enable systemd services
+  - type: systemd
+    system:
+      enabled:
+        - rpm-ostree-countme.service
+        # - dconf-update.service Already in Bazzite
+        - docker.socket
+        - podman.socket
+        - swtpm-workaround.service
+    user:
+      enabled:
+        - podman-auto-update.timer
+
+# Cleanup repos, etc...
+  - type: script
+    scripts:
+      - cleanup.sh
+
+  - type: signing # this sets up the proper policy & signing files for signed images to work fully
+

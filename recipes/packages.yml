@@ -48,15 +48,6 @@ modules:
       - wl-clipboard
       - zsh
 
-      # KDE packages
-      - skanpage
-      - libadwaita-qt5
-      - libadwaita-qt6
-      - kde-runtime-docs
-      - kdenetwork-filesharing
-      # - kdeplasma-addons Already included in Bazzite
-      - plasma-wallpapers-dynamic
-
       # DX Bluefin packages
       - adobe-source-code-pro-fonts
       - android-tools

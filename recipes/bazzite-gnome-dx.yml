@@ -1,10 +1,10 @@
 # image will be published to ghcr.io/<user>/<name>
-name: bazzite-dx
+name: bazzite-gnome-dx
 # description will be included in the image's metadata
-description: This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin DX image.
+description: This is my custom Bazzite GNOME image that tries to add all the development capabilities from the Bluefin DX image.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/bazzite
+base-image: ghcr.io/ublue-os/bazzite-gnome
 image-version: latest # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
@@ -22,14 +22,12 @@ modules:
   - type: files
     files:
       - ../bluefin/system_files/shared: /
-      - ../bluefin/system_files/kinoite/usr/bin: /usr/bin
-      - ../bluefin/system_files/kinoite/usr/etc/flatpak: /usr/etc/flatpak
-      - ../bluefin/system_files/kinoite/usr/etc/profile.d/ksshaskpass.sh: /usr/etc/profile.d
-      - ../bluefin/system_files/kinoite/usr/share/applications: /usr/share/applications
-      - ../bluefin/system_files/kinoite/usr/share/kglobalaccel: /usr/share/kglobalaccel
+      - ../bluefin/system_files/silverblue/usr/bin: /usr/bin
+      - ../bluefin/system_files/silverblue/usr/etc/flatpak: /usr/etc/flatpak
+      - ../bluefin/system_files/silverblue/usr/etc/profile.d: /usr/etc/profile.d
+      - ../bluefin/system_files/silverblue/usr/share: /usr/share
       - ../bluefin/system_files/dx: /
       - shared: /
-      - kinoite: /
 
 # Activate RPM Fusion repos
   - type: script
@@ -38,6 +36,31 @@ modules:
 
 # Install packages from Bluefin and Bluefin DX
   - from-file: packages.yml
+
+# Install GNOME packages
+  - type: rpm-ostree
+    install:
+      - simple-scan
+      - gnome-shell-extension-appindicator
+      - gnome-shell-extension-blur-my-shell
+      - gnome-shell-extension-caffeine
+      - gnome-shell-extension-dash-to-dock
+      - gnome-shell-extension-gsconnect
+      - gnome-shell-extension-logo-menu
+      - gnome-shell-extension-search-light
+      - libgda-sqlite
+      - libgda
+      - libratbag-ratbagd
+      - nautilus-gsconnect
+      - openssh-askpass
+      - yaru-theme
+      - gnome-shell-extension-tailscale-gnome-qs
+      - nautilus-open-any-terminal
+    remove:
+      - gnome-extensions-app
+      - gnome-software-rpm-ostree
+      - gnome-tour
+      - gnome-terminal-nautilus
 
 # Install Starhip and activate RPM Fusion repos
   - type: script

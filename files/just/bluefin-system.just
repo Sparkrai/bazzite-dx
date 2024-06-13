@@ -100,30 +100,30 @@ configure-shell ACTION="":
       printf "${USER}'s shell is now %s.\n" "$(cat /etc/passwd | grep ":$UID:" | cut '-d:' '-f7')"
     fi
 
-# alias gnome-vrr := toggle-gnome-vrr
+alias gnome-vrr := toggle-gnome-vrr
 
 # Enable or Disable Gnome-VRR
-# toggle-gnome-vrr:
-#     #!/usr/bin/env bash
-#     if gsettings get org.gnome.mutter experimental-features | grep -q "variable-refresh-rate"
-#     then
-#       CURRENT_STATE="Enabled"
-#     else
-#       CURRENT_STATE="Disabled"
-#     fi
-#     echo "Gnome-VRR is currently ${CURRENT_STATE}"
-#     echo "Enable or Disable Gnome-VRR"
-#     OPTION=$(gum choose Enable Disable)
-#     if [ "$OPTION" = "Enable" ]
-#     then
-#       echo "Enabling Gnome-VRR"
-#       gsettings set org.gnome.mutter experimental-features "['variable-refresh-rate','scale-monitor-framebuffer']"
-#     elif [ "$OPTION" = "Disable" ]
-#     then
-#       echo "Disabling Gnome-VRR"
-#       gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-#     fi
-#     echo "To apply the changes make sure you logout and restart your session"
+toggle-gnome-vrr:
+    #!/usr/bin/env bash
+    if gsettings get org.gnome.mutter experimental-features | grep -q "variable-refresh-rate"
+    then
+      CURRENT_STATE="Enabled"
+    else
+      CURRENT_STATE="Disabled"
+    fi
+    echo "Gnome-VRR is currently ${CURRENT_STATE}"
+    echo "Enable or Disable Gnome-VRR"
+    OPTION=$(gum choose Enable Disable)
+    if [ "$OPTION" = "Enable" ]
+    then
+      echo "Enabling Gnome-VRR"
+      gsettings set org.gnome.mutter experimental-features "['variable-refresh-rate','scale-monitor-framebuffer']"
+    elif [ "$OPTION" = "Disable" ]
+    then
+      echo "Disabling Gnome-VRR"
+      gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+    fi
+    echo "To apply the changes make sure you logout and restart your session"
 
 # Ptyxis terminal transparency
 ptyxis-transparency opacity="0.95":
