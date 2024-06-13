@@ -35,7 +35,7 @@ modules:
       - copr-repos.sh
 
 # Install packages from Bluefin and Bluefin DX
-  - from-file: packages.yml
+  # - from-file: packages.yml
 
 # Install GNOME packages
   - type: rpm-ostree
@@ -46,15 +46,14 @@ modules:
       - gnome-shell-extension-caffeine
       - gnome-shell-extension-dash-to-dock
       - gnome-shell-extension-gsconnect
-      - gnome-shell-extension-logo-menu
-      - gnome-shell-extension-search-light
+      # - gnome-shell-extension-logo-menu # Already in Bazzite
+      # - gnome-shell-extension-search-light # Canìt find repo for it
       - libgda-sqlite
       - libgda
       - libratbag-ratbagd
       - nautilus-gsconnect
       - openssh-askpass
       - yaru-theme
-      - gnome-shell-extension-tailscale-gnome-qs
       - nautilus-open-any-terminal
     remove:
       - gnome-extensions-app

@@ -49,6 +49,10 @@ modules:
       - kdenetwork-filesharing
       # - kdeplasma-addons Already included in Bazzite
       - plasma-wallpapers-dynamic
+    remove:
+      - krfb
+      - krfb-libs
+      - plasma-welcome
 
 # Install Starhip and activate RPM Fusion repos
   - type: script
