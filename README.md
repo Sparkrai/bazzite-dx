@@ -3,6 +3,12 @@
 This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images.
 It includes docker, podman, vscode, etc... to get you started coding with devcontainers faster as advertised by the Bluefin project.
 
+## Desktop Environment
+As with the other ublue-os images, this image comes with either KDE or GNOME Desktop Environment.
+The imaghes respect Bazzite naming convention:
+- **bazzite-dx** based on **bazzite**, runs KDE with **aurora-dx** layered on top
+- **bazzite-gnome-dx** based on **bazzite-gnome**, runs GNOME with **bluefin-dx** layered on top
+
 ## Installation
 
 > **Warning**  
@@ -10,9 +16,11 @@ It includes docker, podman, vscode, etc... to get you started coding with devcon
 
 To rebase an existing atomic Fedora installation to the latest build:
 
-- First rebase to the unsigned image, to get the proper signing keys and policies installed:
+- First choose the flavor of the image you'd like to install (either **bazzite-dx** or **bazzite-gnome-dx**)
+
+- Then rebase to the unsigned image, to get the proper signing keys and policies installed:
   ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/sparkrai/bazzite-dx:latest
+  rpm-ostree rebase ostree-unverified-registry:ghcr.io/sparkrai/(_bazzite-dx_ or _bazzite-gnome-dx_):latest
   ```
 - Reboot to complete the rebase:
   ```
@@ -20,7 +28,7 @@ To rebase an existing atomic Fedora installation to the latest build:
   ```
 - Then rebase to the signed image, like so:
   ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/sparkrai/bazzite-dx:latest
+  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/sparkrai/(_bazzite-dx_ or _bazzite-gnome-dx_):latest
   ```
 - Reboot again to complete the installation
   ```
