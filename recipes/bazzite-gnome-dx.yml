@@ -35,7 +35,7 @@ modules:
       - copr-repos.sh
 
 # Install packages from Bluefin and Bluefin DX
-  # - from-file: packages.yml
+  - from-file: packages.yml
 
 # Install GNOME packages
   - type: rpm-ostree
