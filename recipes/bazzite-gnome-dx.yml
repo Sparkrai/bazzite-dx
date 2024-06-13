@@ -21,11 +21,17 @@ modules:
 
   - type: files
     files:
-      - ../bluefin/system_files/shared: /
-      - ../bluefin/system_files/silverblue/usr/bin: /usr/bin
+      - ../bluefin/system_files/shared/usr/bin: /usr/bin
+      - ../bluefin/system_files/shared/usr/etc: /usr/etc
+      - ../bluefin/system_files/shared/usr/libexec: /usr/libexec
+      - ../bluefin/system_files/shared/usr/lib/tmpfiles.d: /usr/lib/tmpfiles.d
+      - ../bluefin/system_files/shared/usr/share/ublue-os/bluefin: /usr/share/ublue-os/bluefin
+      - ../bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli: /usr/share/ublue-os/bluefin-cli
+      - ../bluefin/system_files/shared/usr/share/ublue-os/homebrew: /usr/share/ublue-os/homebrew
+      - ../bluefin/system_files/shared/usr/share/ublue-os/quadlets: /usr/share/ublue-os/quadlets
+      - ../bluefin/system_files/shared/usr/share/ublue-os/ublue-os.jsonc: /usr/share/ublue-os/ublue-os.jsonc
       - ../bluefin/system_files/silverblue/usr/etc/flatpak: /usr/etc/flatpak
-      - ../bluefin/system_files/silverblue/usr/etc/profile.d: /usr/etc/profile.d
-      - ../bluefin/system_files/silverblue/usr/share: /usr/share
+      # - ../bluefin/system_files/silverblue/usr/share: /usr/share # Avoid Bluefin branding
       - ../bluefin/system_files/dx: /
       - shared: /
 
@@ -46,8 +52,6 @@ modules:
       - gnome-shell-extension-caffeine
       - gnome-shell-extension-dash-to-dock
       - gnome-shell-extension-gsconnect
-      # - gnome-shell-extension-logo-menu # Already in Bazzite
-      # - gnome-shell-extension-search-light # Canìt find repo for it
       - libgda-sqlite
       - libgda
       - libratbag-ratbagd
@@ -60,6 +64,11 @@ modules:
       - gnome-software-rpm-ostree
       - gnome-tour
       - gnome-terminal-nautilus
+
+  - type: gnome-extensions
+    install:
+      - Logo Menu
+      - Search Light
 
 # Install Starhip and activate RPM Fusion repos
   - type: script
