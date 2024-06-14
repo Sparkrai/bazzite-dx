@@ -37,7 +37,7 @@ devmode:
     if grep -q "/var/ublue-os/image" <<< $CURRENT_IMAGE
     then
         echo ""
-        echo "Before we can switch to the Bluefin Developer Experience"
+        echo "Before we can switch to the Bazzite Developer Experience"
         echo "the current system needs an update. Please run 'just update'"
         echo "and reboot your system when the update is finished."
         exit
@@ -262,14 +262,14 @@ install-system-flatpaks:
 configure-grub:
     @/usr/libexec/configure-grub.sh
 
-# Rebase assistant
-rebase-helper:
-    @/usr/bin/ublue-rollback-helper
+# # Rebase assistant
+# rebase-helper:
+#     @/usr/bin/ublue-rollback-helper
 
-alias rollback-helper := rebase-helper
+# alias rollback-helper := rebase-helper
 
-update-ng:
-    echo "Note: This command doesn't work if you have locally layered packages" 
-    sudo bootc upgrade
-    flatpak update -y
-    brew upgrade
+# update-ng:
+#     echo "Note: This command doesn't work if you have locally layered packages" 
+#     sudo bootc upgrade
+#     flatpak update -y
+#     brew upgrade

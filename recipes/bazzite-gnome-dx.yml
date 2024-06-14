@@ -29,7 +29,6 @@ modules:
       - ../bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli: /usr/share/ublue-os/bluefin-cli
       - ../bluefin/system_files/shared/usr/share/ublue-os/homebrew: /usr/share/ublue-os/homebrew
       - ../bluefin/system_files/shared/usr/share/ublue-os/quadlets: /usr/share/ublue-os/quadlets
-      - ../bluefin/system_files/shared/usr/share/ublue-os/ublue-os.jsonc: /usr/share/ublue-os/ublue-os.jsonc
       - ../bluefin/system_files/silverblue/usr/etc/flatpak: /usr/etc/flatpak
       # - ../bluefin/system_files/silverblue/usr/share: /usr/share # Avoid Bluefin branding
       - ../bluefin/system_files/dx: /
@@ -49,9 +48,9 @@ modules:
       - simple-scan
       - gnome-shell-extension-appindicator
       - gnome-shell-extension-blur-my-shell
-      - gnome-shell-extension-caffeine
+      # - gnome-shell-extension-caffeine # Already in Bazzite
       - gnome-shell-extension-dash-to-dock
-      - gnome-shell-extension-gsconnect
+      # - gnome-shell-extension-gsconnect # Already in Bazzite
       - libgda-sqlite
       - libgda
       - libratbag-ratbagd
@@ -67,7 +66,7 @@ modules:
 
   - type: gnome-extensions
     install:
-      - Logo Menu
+      # - Logo Menu # Already in Bazzite
       - Search Light
 
 # Install Starhip and activate RPM Fusion repos
