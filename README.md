@@ -3,6 +3,9 @@
 This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images.
 It includes docker, podman, vscode, etc... to get you started coding with devcontainers faster as advertised by the Bluefin project.
 
+### Disclaimer  
+These images as provided as is and are considered in alpha state!
+
 ## Desktop Environment
 As with the other ublue-os images, this image comes with either KDE or GNOME Desktop Environment.
 The imaghes respect Bazzite naming convention:
