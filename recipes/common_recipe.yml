@@ -1,4 +1,21 @@
 modules:
+  - type: containerfile
+    snippets:
+      - ARG IMAGE_VENDOR="${IMAGE_REGISTRY}"
+      - ARG FEDORA_MAJOR_VERSION="${OS_VERSION}"
+      - ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-main}"
+      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite}"
+      - ARG NVIDIA_TYPE="${NVIDIA_TYPE:-}"
+      - ARG UBLUE_IMAGE_TAG="${UBLUE_IMAGE_TAG:-latest}"
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/bin/atuin /usr/bin/atuin
+      - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/share/bash-prexec /usr/share/bash-prexec
+
+# Activate RPM Fusion repos
+  - type: script
+    scripts:
+      - copr-repos.sh
+
+# Install packages from Bluefin and Bluefin DX
   - type: rpm-ostree
     repos:
       - https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-%OS_VERSION%/ublue-os-staging-fedora-%OS_VERSION%.repo
@@ -10,7 +27,7 @@ modules:
       - https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/repo/fedora-%OS_VERSION%/hikariknight-looking-glass-kvmfr-fedora-%OS_VERSION%.repo
 
     install:
-      # Base Bluefin packages
+    # Base Bluefin packages
       - bash-color-prompt
       - bcache-tools
       - evtest
@@ -48,7 +65,7 @@ modules:
       - wl-clipboard
       - zsh
 
-      # DX Bluefin packages
+    # DX Bluefin packages
       - adobe-source-code-pro-fonts
       - android-tools
       - cascadia-code-fonts
@@ -106,3 +123,44 @@ modules:
       - udica
       - virt-manager
       - virt-viewer
+
+# Install Starhip and activate RPM Fusion repos
+  - type: script
+    snippets:
+      - "find ${CONFIG_DIRECTORY}/bluefin/build_files -type f -exec chmod +x {} \\;" # Make bluefin scripts executable
+    scripts:
+      - ../bluefin/build_files/shared/image-info.sh
+      - fetch-install.sh
+      - ../bluefin/build_files/base/fetch-quadlets.sh
+
+# alternatives cannot create symlinks on its own during a container build
+  - type: script
+    snippets:
+      - "ln -sf /usr/bin/ld.bfd /etc/alternatives/ld && ln -sf /etc/alternatives/ld /usr/bin/ld"
+
+# Install fonts
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - FiraCode # don't add spaces or "Nerd Font" suffix.
+        - Hack
+        - SourceCodePro
+        - Terminus
+        - JetBrainsMono
+        - NerdFontsSymbolsOnly
+      google-fonts:
+        - Roboto
+        - Open Sans
+
+# Enable systemd services
+  - type: systemd
+    system:
+      enabled:
+        - rpm-ostree-countme.service
+        # - dconf-update.service Already in Bazzite
+        - docker.socket
+        - podman.socket
+        - swtpm-workaround.service
+    user:
+      enabled:
+        - podman-auto-update.timer
