@@ -21,18 +21,31 @@ modules:
 
   - type: files
     files:
-      - ../bluefin/system_files/shared/usr/bin: /usr/bin
-      - ../bluefin/system_files/shared/usr/etc: /usr/etc
-      - ../bluefin/system_files/shared/usr/libexec: /usr/libexec
-      - ../bluefin/system_files/shared/usr/lib/tmpfiles.d: /usr/lib/tmpfiles.d
-      - ../bluefin/system_files/shared/usr/share/ublue-os/bluefin: /usr/share/ublue-os/bluefin
-      - ../bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli: /usr/share/ublue-os/bluefin-cli
-      - ../bluefin/system_files/shared/usr/share/ublue-os/homebrew: /usr/share/ublue-os/homebrew
-      - ../bluefin/system_files/shared/usr/share/ublue-os/quadlets: /usr/share/ublue-os/quadlets
-      - ../bluefin/system_files/silverblue/usr/etc/flatpak: /usr/etc/flatpak
-      # - ../bluefin/system_files/silverblue/usr/share: /usr/share # Avoid Bluefin branding
-      - ../bluefin/system_files/dx: /
-      - shared: /
+      - source: bluefin/system_files/shared/usr/bin 
+        destination: /usr/bin
+      - source: bluefin/system_files/shared/usr/etc
+        destination: /usr/etc
+      - source: bluefin/system_files/shared/usr/libexec
+        destination: /usr/libexec
+      - source: bluefin/system_files/shared/usr/lib/tmpfiles.d
+        destination: /usr/lib/tmpfiles.d
+      - source: bluefin/system_files/shared/usr/share/ublue-os/bluefin
+        destination: /usr/share/ublue-os/bluefin
+      - source: bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli
+        destination: /usr/share/ublue-os/bluefin-cli
+      - source: bluefin/system_files/shared/usr/share/ublue-os/homebrew
+        destination: /usr/share/ublue-os/homebrew
+      - source: bluefin/system_files/shared/usr/share/ublue-os/quadlets
+        destination: /usr/share/ublue-os/quadlets
+      - source: bluefin/system_files/silverblue/usr/etc/flatpak
+        destination: /usr/etc/flatpak
+      # Avoid Bluefin branding
+      # - source: bluefin/system_files/silverblue/usr/share:
+       # destination: /usr/share
+      - source: bluefin/system_files/dx
+        destination: /
+      - source: files/shared
+        destination: /
 
 # Activate RPM Fusion repos
   - type: script
