@@ -58,7 +58,7 @@ devmode:
             echo "You are already on a developer image"
         else
             echo "Rebasing to a developer image"
-            NEW_IMAGE=$(echo $CURRENT_IMAGE | sed "s/ublue-os\/bazzite/sparkrai\/bazzite-dx/")
+            NEW_IMAGE=$(echo $CURRENT_IMAGE | sed "s/ublue-os\/bazzite/sparkrai\/bazzite-deck-dx/")
             rpm-ostree rebase $NEW_IMAGE
         fi
     elif [ "$OPTION" = "Disable" ]
@@ -66,7 +66,7 @@ devmode:
         if [ "$CURRENT_STATE" = "enabled" ]
         then
             echo "Rebasing to a non developer image"
-            NEW_IMAGE=$(echo $CURRENT_IMAGE | sed "s/sparkrai\/bazzite-dx/ublue-os\/bazzite/")
+            NEW_IMAGE=$(echo $CURRENT_IMAGE | sed "s/sparkrai\/bazzite-deck-dx/ublue-os\/bazzite/")
             rpm-ostree rebase $NEW_IMAGE
         else
             echo "You are currently not on a developer image"

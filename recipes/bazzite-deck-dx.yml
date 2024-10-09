@@ -1,10 +1,10 @@
 # image will be published to ghcr.io/<user>/<name>
-name: bazzite-dx
+name: bazzite-deck-dx
 # description will be included in the image's metadata
 description: This is my custom Bazzite image that tries to add all the development capabilities from the Aurora DX image.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/bazzite
+base-image: ghcr.io/ublue-os/bazzite-deck
 image-version: latest # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order

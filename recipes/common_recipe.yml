@@ -4,7 +4,7 @@ modules:
       - ARG IMAGE_VENDOR="${IMAGE_REGISTRY}"
       - ARG FEDORA_MAJOR_VERSION="${OS_VERSION}"
       - ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-main}"
-      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite}"
+      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite-deck}"
       - ARG NVIDIA_TYPE="${NVIDIA_TYPE:-}"
       - ARG UBLUE_IMAGE_TAG="${UBLUE_IMAGE_TAG:-latest}"
       - COPY --from=ghcr.io/ublue-os/bluefin-cli /usr/bin/atuin /usr/bin/atuin

@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"command": "bluebuild build -B=podman -I=podman recipes/bazzite-gnome-dx.yml",
+			"command": "bluebuild build -B=podman -I=podman recipes/bazzite-deck-gnome-dx.yml",
 			"group": {
 				"kind": "build",
 				"isDefault": true

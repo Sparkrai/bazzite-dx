@@ -1,4 +1,4 @@
-# bazzite-dx &nbsp; [![build-ublue](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml/badge.svg)](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml)
+# bazzite-deck-dx &nbsp; [![build-ublue](https://github.com/sparkrai/bazzite-deck-dx/actions/workflows/build.yml/badge.svg)](https://github.com/sparkrai/bazzite-deck-dx/actions/workflows/build.yml)
 
 This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images.
 It includes docker, podman, vscode, etc... to get you started coding with devcontainers faster as advertised by the Bluefin project.
@@ -9,8 +9,8 @@ These images as provided as is and are considered in alpha state!
 ## Desktop Environment
 As with the other ublue-os images, this image comes with either KDE or GNOME Desktop Environment.
 The imaghes respect Bazzite naming convention:
-- **bazzite-dx** based on **bazzite**, runs KDE with **aurora-dx** layered on top
-- **bazzite-gnome-dx** based on **bazzite-gnome**, runs GNOME with **bluefin-dx** layered on top
+- **bazzite-deck-dx** based on **bazzite**, runs KDE with **aurora-dx** layered on top
+- **bazzite-deck-gnome-dx** based on **bazzite-deck-gnome**, runs GNOME with **bluefin-dx** layered on top
 
 ## Installation
 
@@ -19,11 +19,11 @@ The imaghes respect Bazzite naming convention:
 
 To rebase an existing atomic Fedora installation to the latest build:
 
-- First choose the flavor of the image you'd like to install (either **bazzite-dx** or **bazzite-gnome-dx**)
+- First choose the flavor of the image you'd like to install (either **bazzite-deck-dx** or **bazzite-deck-gnome-dx**)
 
 - Then rebase to the unsigned image, to get the proper signing keys and policies installed:
   ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/sparkrai/(bazzite-dx or bazzite-gnome-dx):latest
+  rpm-ostree rebase ostree-unverified-registry:ghcr.io/sparkrai/(bazzite-deck-dx or bazzite-deck-gnome-dx):latest
   ```
 - Reboot to complete the rebase:
   ```
@@ -31,7 +31,7 @@ To rebase an existing atomic Fedora installation to the latest build:
   ```
 - Then rebase to the signed image, like so:
   ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/sparkrai/(bazzite-dx or bazzite-gnome-dx):latest
+  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/sparkrai/(bazzite-deck-dx or bazzite-deck-gnome-dx):latest
   ```
 - Reboot again to complete the installation
   ```
@@ -49,5 +49,5 @@ If build on Fedora Atomic, you can generate an offline ISO with the instructions
 These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). You can verify the signature by downloading the `cosign.pub` file from this repo and running the following command:
 
 ```bash
-cosign verify --key cosign.pub ghcr.io/sparkrai/bazzite-dx
+cosign verify --key cosign.pub ghcr.io/sparkrai/bazzite-deck-dx
 ```

@@ -21,8 +21,8 @@ jobs:
       fail-fast: false # stop GH from cancelling all matrix builds if one fails
       matrix:
         recipe:
-          - bazzite-dx.yml
-          - bazzite-gnome-dx.yml
+          - bazzite-deck-dx.yml
+          - bazzite-deck-gnome-dx.yml
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
