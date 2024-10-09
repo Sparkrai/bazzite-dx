@@ -10,7 +10,7 @@
 
 %TIP%
 
-- 󰊤 [Issues](https://github.com/Sparkrai/bazzite-deck-dx/issues)
+- 󰊤 [Issues](https://github.com/footvaalvica/bazzite-deck-dx/issues)
 - 󰊤 [Bazzite Documentation](https://universal-blue.discourse.group/docs?topic=561)
 - 󰈙 [Bluefin Documentation](http://docs.projectbluefin.io/)     
 - 󰊌 [Discuss](https://universal-blue.discourse.group/c/bazzite/5)
