@@ -1,4 +1,4 @@
-# 󱍢 Welcome to Bazzite DX
+# 󱍢 Welcome to Bazzite Deck DX
 󱋩 `%IMAGE_NAME%:%IMAGE_TAG%`
 
 |  Command | Description |
