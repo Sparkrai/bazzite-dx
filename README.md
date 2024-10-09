@@ -1,6 +1,6 @@
 # bazzite-deck-dx &nbsp; [![build-ublue](https://github.com/footvaalvica/bazzite-deck-dx/actions/workflows/build.yml/badge.svg)](https://github.com/footvaalvica/bazzite-deck-dx/actions/workflows/build.yml)
 
-This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images, forked from Sparkrai/bazzite-dx.
+This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images, forked from [bazzite-dx](https://github.com/Sparkrai/bazzite-dx).
 It includes docker, podman, vscode, etc... to get you started coding with devcontainers faster as advertised by the Bluefin project.
 
 ### Disclaimer  
