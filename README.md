@@ -9,7 +9,7 @@ These images as provided as is and are considered in alpha state!
 ## Desktop Environment
 As with the other ublue-os images, this image comes with either KDE or GNOME Desktop Environment.
 The imaghes respect Bazzite naming convention:
-- **bazzite-deck-dx** based on **bazzite**, runs KDE with **aurora-dx** layered on top
+- **bazzite-deck-dx** based on **bazzite-deck**, runs KDE with **aurora-dx** layered on top
 - **bazzite-deck-gnome-dx** based on **bazzite-deck-gnome**, runs GNOME with **bluefin-dx** layered on top
 
 ## Installation
