@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=System Update
-Comment=Update Bazzite Deck DX, Flatpaks, Distrobox containers, and more
+Comment=Update Bazzite-Deck-DX, Flatpaks, Distrobox containers, and more
 Icon=/usr/share/ublue-os/bazzite/update.svg
 Categories=ConsoleOnly;System;
 Terminal=true
