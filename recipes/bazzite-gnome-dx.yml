@@ -10,26 +10,24 @@ image-version: latest # latest is also supported if you want new updates ASAP
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
+  - type: containerfile
+    snippets:
+      - ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-bazzite-gnome}"
+
   - type: files
     files:
       - source: bluefin/system_files/shared/usr/bin 
         destination: /usr/bin
-      - source: bluefin/system_files/shared/usr/etc
-        destination: /usr/etc
       - source: bluefin/system_files/shared/usr/libexec
         destination: /usr/libexec
       - source: bluefin/system_files/shared/usr/lib/tmpfiles.d
         destination: /usr/lib/tmpfiles.d
-      - source: bluefin/system_files/shared/usr/share/ublue-os/bluefin
-        destination: /usr/share/ublue-os/bluefin
       - source: bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli
         destination: /usr/share/ublue-os/bluefin-cli
       - source: bluefin/system_files/shared/usr/share/ublue-os/homebrew
         destination: /usr/share/ublue-os/homebrew
       - source: bluefin/system_files/shared/usr/share/ublue-os/quadlets
         destination: /usr/share/ublue-os/quadlets
-      - source: bluefin/system_files/silverblue/usr/etc/flatpak
-        destination: /usr/etc/flatpak
       # Avoid Bluefin branding
       # - source: bluefin/system_files/silverblue/usr/share:
        # destination: /usr/share
@@ -44,19 +42,24 @@ modules:
 # Install GNOME packages
   - type: rpm-ostree
     install:
-      - simple-scan
+      - cryfs
       - gnome-shell-extension-appindicator
       - gnome-shell-extension-blur-my-shell
-      # - gnome-shell-extension-caffeine # Already in Bazzite
+      # - gnome-shell-extension-caffeine
       - gnome-shell-extension-dash-to-dock
-      # - gnome-shell-extension-gsconnect # Already in Bazzite
-      - libgda-sqlite
+      # - gnome-shell-extension-gsconnect
+      # - gnome-shell-extension-logo-menu
+      - gnome-shell-extension-search-light
+      - gnome-shell-extension-tailscale-gnome-qs
       - libgda
+      - libgda-sqlite
       - libratbag-ratbagd
       - nautilus-gsconnect
-      - openssh-askpass
-      - yaru-theme
       - nautilus-open-any-terminal
+      - openssh-askpass
+      - simple-scan
+      - yaru-theme
+      - zenity
     remove:
       - gnome-extensions-app
       - gnome-software-rpm-ostree

@@ -14,6 +14,7 @@ modules:
   - type: script
     scripts:
       - copr-repos.sh
+      # - packages.sh
 
 # Install packages from Bluefin and Bluefin DX
   - type: rpm-ostree
@@ -25,28 +26,43 @@ modules:
       - https://copr.fedorainfracloud.org/coprs/karmab/kcli/repo/fedora-%OS_VERSION%/karmab-kcli-fedora-%OS_VERSION%.repo
       - https://copr.fedorainfracloud.org/coprs/atim/ubuntu-fonts/repo/fedora-%OS_VERSION%/atim-ubuntu-fonts-fedora-%OS_VERSION%.repo
       - https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/repo/fedora-%OS_VERSION%/hikariknight-looking-glass-kvmfr-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/ganto/umoci/repo/fedora-%OS_VERSION%/ganto-umoci-fedora-%OS_VERSION%.repo
 
     install:
     # Base Bluefin packages
+      - adcli
       - bash-color-prompt
       - bcache-tools
+      - borgbackup
+      - bootc
       - evtest
       - epson-inkjet-printer-escpr
       - epson-inkjet-printer-escpr2
       - fastfetch
       - fish
       - firewall-config
+      - foo2zjs
+      - freeipa-client
+      - fuse-encfs
       - gcc
+      - git-credential-libsecret
       - glow
       - gum
       - hplip
+      - krb5-workstation
       - ifuse
+      - input-leap
       - input-remapper
+      - jetbrains-mono-fonts-all
       - libimobiledevice
       - libxcrypt-compat
+      - libsss_autofs
       - lm_sensors
       - make
+      - mesa-libGLU
       - nerd-fonts
+      - oddjob-mkhomedir
+      - opendyslexic-fonts
       - playerctl
       - printer-driver-brlaser
       - pulseaudio-utils
@@ -58,21 +74,32 @@ modules:
       - samba-winbind-clients
       - samba-winbind-modules
       - samba
+      - setools-console
+      - solaar
+      - sssd-ad
+      - sssd-ipa
+      - sssd-krb5
+      - sssd-nfs-idmap
       - stress-ng
+      - tailscale
       - tmux
       - usbmuxd
       - wireguard-tools
+      - xprop
       - wl-clipboard
       - zsh
 
     # DX Bluefin packages
       - adobe-source-code-pro-fonts
       - android-tools
+      - bcc
+      - bpftop
+      - bpftrace
       - cascadia-code-fonts
+      - cockpit-bridge
       - cockpit-machines
       - cockpit-networkmanager
       - cockpit-ostree
-      - cockpit-pcp
       - cockpit-podman
       - cockpit-selinux
       - cockpit-storaged
@@ -94,13 +121,13 @@ modules:
       - incus
       - incus-agent
       - iotop
-      - jetbrains-mono-fonts-all
       # - kcli
       - libvirt
+      - libvirt-nss
       - lxc
-      - lxd-agent
-      - lxd
       - mozilla-fira-mono-fonts
+      - nicstat
+      - numactl
       - p7zip-plugins
       - p7zip
       - podman-compose
@@ -117,21 +144,28 @@ modules:
       - qemu-user-binfmt
       - qemu-user-static
       - qemu
-      # - rocm-hip Already included in Bazzite
+      # - rocm-hip
       # - rocm-opencl
+      - rocm-smi
+      - sysprof
+      - tiptop
+      - trace-cmd
       - ubuntu-family-fonts
       - udica
+      - umoci
       - virt-manager
       - virt-viewer
+      - virt-v2v
+      - ydotool
 
 # Install Starhip and activate RPM Fusion repos
   - type: script
     snippets:
       - "find ${CONFIG_DIRECTORY}/bluefin/build_files -type f -exec chmod +x {} \\;" # Make bluefin scripts executable
     scripts:
-      - ../bluefin/build_files/shared/image-info.sh
+      - ../bluefin/build_files/image-info.sh
       - fetch-install.sh
-      - ../bluefin/build_files/base/fetch-quadlets.sh
+      - ../bluefin/build_files/fetch-quadlets.sh
 
 # alternatives cannot create symlinks on its own during a container build
   - type: script
