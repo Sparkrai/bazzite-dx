@@ -14,7 +14,6 @@ modules:
   - type: script
     scripts:
       - copr-repos.sh
-      # - packages.sh
 
 # Install packages from Bluefin and Bluefin DX
   - type: rpm-ostree
