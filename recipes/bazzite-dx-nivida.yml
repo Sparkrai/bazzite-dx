@@ -1,13 +1,14 @@
-# image will be published to ghcr.io/<user>/<name>
-name: bazzite-dx
-# description will be included in the image's metadata
+# Image will be published to ghcr.io/<user>/<name>
+name: bazzite-dx-nvidia
+# Description will be included in the image's metadata
 description: This is my custom Bazzite image that tries to add all the development capabilities from the Aurora DX image.
 
-# the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/bazzite
+# The base image to build on top of (FROM) and the version tag to use
+base-image: ghcr.io/ublue-os/bazzite-nvidia
 image-version: latest # latest is also supported if you want new updates ASAP
 
-# module configuration
+# Module configuration
 modules:
+
 # Common steps between KDE versions
   - from-file: common_kde_recipe.yml
