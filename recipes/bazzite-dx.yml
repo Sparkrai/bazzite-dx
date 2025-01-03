@@ -49,8 +49,8 @@ modules:
       - kdenetwork-filesharing
       # - kdeplasma-addons # Already included in bazzite
       - kdialog
-      - libadwaita-qt5
-      - libadwaita-qt6
+      # - libadwaita-qt5
+      # - libadwaita-qt6
       - plasma-wallpapers-dynamic
       - skanpage
     remove:
