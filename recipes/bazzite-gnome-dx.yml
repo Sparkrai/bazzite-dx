@@ -61,7 +61,7 @@ modules:
       - yaru-theme
       - zenity
     remove:
-      - gnome-extensions-app
+      # - gnome-extensions-app
       - gnome-software-rpm-ostree
       - gnome-tour
       - gnome-terminal-nautilus
