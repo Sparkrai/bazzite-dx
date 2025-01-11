@@ -82,9 +82,12 @@ if [[ ${#INSTALL_PKGS[@]} -gt 0 ]]; then
   done
 fi
 
+# store a list of RPMs installed on the image
+INSTALLED_REMOVE_PACKAGES=()
+
 # ensure removal list only contains packages already present on image
 if [[ "${#REMOVE_PKGS[@]}" -gt 0 ]]; then
-    REMOVE_PKGS=($(rpm -qa --queryformat='%{NAME} ' ${REMOVE_PKGS[@]}))
+    INSTALLED_REMOVE_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${REMOVE_PKGS[@]}))
 fi
 
 echo_rpm_install() {
@@ -110,32 +113,32 @@ echo_rpm_install() {
     fi
 }
 
-if [[ ${#INSTALL_PKGS[@]} -gt 0 && ${#REMOVE_PKGS[@]} -gt 0 ]]; then
+if [[ ${#INSTALL_PKGS[@]} -gt 0 && ${#INSTALLED_REMOVE_PACKAGES[@]} -gt 0 ]]; then
     echo "Installing & Removing RPMs"
     echo_rpm_install
-    echo "Removing: ${REMOVE_PKGS[*]}"
+    echo "Removing: ${INSTALLED_REMOVE_PACKAGES[*]}"
     # Doing both actions in one command allows for replacing required packages with alternatives
     # When --install= flag is used, URLs & local packages are not supported
     if ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
     elif ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
       rpm-ostree install "${HTTPS_PKGS[@]}"
     elif ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")    
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")    
       rpm-ostree install "${LOCAL_PKGS[@]}"
     elif ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
       rpm-ostree install "${HTTPS_PKGS[@]}" "${LOCAL_PKGS[@]}"
     fi  
 elif [[ ${#INSTALL_PKGS[@]} -gt 0 ]]; then
     echo "Installing RPMs"
     echo_rpm_install
     rpm-ostree install "${INSTALL_PKGS[@]}"
-elif [[ ${#REMOVE_PKGS[@]} -gt 0 ]]; then
+elif [[ ${#INSTALLED_REMOVE_PACKAGES[@]} -gt 0 ]]; then
     echo "Removing RPMs"
-    echo "Removing: ${REMOVE_PKGS[*]}"
-    rpm-ostree override remove "${REMOVE_PKGS[@]}"
+    echo "Removing: ${INSTALLED_REMOVE_PACKAGES[*]}"
+    rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}"
 fi
 
 get_json_array REPLACE 'try .["replace"][]' "$1"
