@@ -40,7 +40,8 @@ modules:
   - from-file: common_recipe.yml
 
 # Install GNOME packages
-  - type: rpm-ostree
+  - type: safe-rpm-ostree
+    source: local
     install:
       - cryfs
       - gnome-shell-extension-appindicator
@@ -61,7 +62,7 @@ modules:
       - yaru-theme
       - zenity
     remove:
-      # - gnome-extensions-app
+      - gnome-extensions-app
       - gnome-software-rpm-ostree
       - gnome-tour
       - gnome-terminal-nautilus
