@@ -1,4 +1,4 @@
-# image will be published to ghcr.io/<user>/<name>
+9# image will be published to ghcr.io/<user>/<name>
 name: bazzite-dx
 # description will be included in the image's metadata
 description: This is my custom Bazzite image that tries to add all the development capabilities from the Aurora DX image.
@@ -56,7 +56,7 @@ modules:
     remove:
       - krfb
       - krfb-libs
-      - plasma-welcome
+      # - plasma-welcome
 
 # Cleanup repos, etc...
   - type: script
