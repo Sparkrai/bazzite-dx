@@ -42,16 +42,32 @@ fi
 # Create symlinks to fix packages that create directories in /opt
 get_json_array OPTFIX 'try .["optfix"][]' "$1"
 if [[ ${#OPTFIX[@]} -gt 0 ]]; then
+    LIB_EXEC_DIR="/usr/libexec/bluebuild"
+    SYSTEMD_DIR="/etc/systemd/system"
+    MODULE_DIR="/tmp/modules/rpm-ostree"
+
+    if ! [ -x "${LIB_EXEC_DIR}/optfix.sh" ]; then
+        mkdir -p "${LIB_EXEC_DIR}"
+        cp "${MODULE_DIR}/optfix.sh" "${LIB_EXEC_DIR}/"
+        chmod +x "${LIB_EXEC_DIR}/optfix.sh"
+    fi
+
+    if ! [ -f "${SYSTEMD_DIR}/bluebuild-optfix.service" ]; then
+        cp "${MODULE_DIR}/bluebuild-optfix.service" "${SYSTEMD_DIR}/"
+        systemctl enable bluebuild-optfix.service
+    fi
+
     echo "Creating symlinks to fix packages that install to /opt"
     # Create symlink for /opt to /var/opt since it is not created in the image yet
     mkdir -p "/var/opt"
-    ln -s "/var/opt"  "/opt"
+    ln -fs "/var/opt"  "/opt"
+
     # Create symlinks for each directory specified in recipe.yml
     for OPTPKG in "${OPTFIX[@]}"; do
         OPTPKG="${OPTPKG%\"}"
         OPTPKG="${OPTPKG#\"}"
         mkdir -p "/usr/lib/opt/${OPTPKG}"
-        ln -s "../../usr/lib/opt/${OPTPKG}" "/var/opt/${OPTPKG}"
+        ln -fs "/usr/lib/opt/${OPTPKG}" "/var/opt/${OPTPKG}"
         echo "Created symlinks for ${OPTPKG}"
     done
 fi
@@ -73,8 +89,9 @@ if [[ ${#INSTALL_PKGS[@]} -gt 0 ]]; then
         HTTPS_INSTALL=true
         HTTPS_PKGS+=("${INSTALL_PKGS[$i]}")
       elif [[ ! "${PKG}" =~ ^https?:\/\/.* ]] && [[ -f "${CONFIG_DIRECTORY}/rpm-ostree/${PKG}" ]]; then
+        INSTALL_PKGS[$i]="${CONFIG_DIRECTORY}/rpm-ostree/${PKG}"
         LOCAL_INSTALL=true
-        LOCAL_PKGS+=("${CONFIG_DIRECTORY}/rpm-ostree/${PKG}")
+        LOCAL_PKGS+=("${INSTALL_PKGS[$i]}")
       else
         CLASSIC_INSTALL=true
         CLASSIC_PKGS+=("${PKG}")
@@ -82,9 +99,12 @@ if [[ ${#INSTALL_PKGS[@]} -gt 0 ]]; then
   done
 fi
 
+# store a list of RPMs installed on the image
+INSTALLED_REMOVE_PACKAGES=()
+
 # ensure removal list only contains packages already present on image
 if [[ "${#REMOVE_PKGS[@]}" -gt 0 ]]; then
-    REMOVE_PKGS=($(rpm -qa --queryformat='%{NAME} ' ${REMOVE_PKGS[@]}))
+    INSTALLED_REMOVE_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${REMOVE_PKGS[@]}))
 fi
 
 echo_rpm_install() {
@@ -110,32 +130,41 @@ echo_rpm_install() {
     fi
 }
 
-if [[ ${#INSTALL_PKGS[@]} -gt 0 && ${#REMOVE_PKGS[@]} -gt 0 ]]; then
+if [[ ${#INSTALL_PKGS[@]} -gt 0 && ${#INSTALLED_REMOVE_PACKAGES[@]} -gt 0 ]]; then
     echo "Installing & Removing RPMs"
     echo_rpm_install
-    echo "Removing: ${REMOVE_PKGS[*]}"
+    echo "Removing: ${INSTALLED_REMOVE_PACKAGES[*]}"
     # Doing both actions in one command allows for replacing required packages with alternatives
     # When --install= flag is used, URLs & local packages are not supported
     if ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
     elif ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
       rpm-ostree install "${HTTPS_PKGS[@]}"
-    elif ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")    
+    elif ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ${LOCAL_INSTALL}; then
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")    
       rpm-ostree install "${LOCAL_PKGS[@]}"
     elif ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ${LOCAL_INSTALL}; then
-      rpm-ostree override remove "${REMOVE_PKGS[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}" $(printf -- "--install=%s " "${CLASSIC_PKGS[@]}")
+      rpm-ostree install "${HTTPS_PKGS[@]}" "${LOCAL_PKGS[@]}"
+    elif ! ${CLASSIC_INSTALL} && ! ${HTTPS_INSTALL} && ${LOCAL_INSTALL}; then
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}"
+      rpm-ostree install "${LOCAL_PKGS[@]}"
+    elif ! ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ! ${LOCAL_INSTALL}; then
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}"
+      rpm-ostree install "${HTTPS_PKGS[@]}"
+    elif ! ${CLASSIC_INSTALL} && ${HTTPS_INSTALL} && ${LOCAL_INSTALL}; then
+      rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}"
       rpm-ostree install "${HTTPS_PKGS[@]}" "${LOCAL_PKGS[@]}"
     fi  
 elif [[ ${#INSTALL_PKGS[@]} -gt 0 ]]; then
     echo "Installing RPMs"
     echo_rpm_install
     rpm-ostree install "${INSTALL_PKGS[@]}"
-elif [[ ${#REMOVE_PKGS[@]} -gt 0 ]]; then
+elif [[ ${#INSTALLED_REMOVE_PACKAGES[@]} -gt 0 ]]; then
     echo "Removing RPMs"
-    echo "Removing: ${REMOVE_PKGS[*]}"
-    rpm-ostree override remove "${REMOVE_PKGS[@]}"
+    echo "Removing: ${INSTALLED_REMOVE_PACKAGES[*]}"
+    rpm-ostree override remove "${INSTALLED_REMOVE_PACKAGES[@]}"
 fi
 
 get_json_array REPLACE 'try .["replace"][]' "$1"
