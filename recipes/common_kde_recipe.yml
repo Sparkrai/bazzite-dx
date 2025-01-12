@@ -34,7 +34,8 @@ modules:
   - from-file: common_recipe.yml
 
 # Install KDE Packages
-  - type: rpm-ostree
+  - type: safe-rpm-ostree
+    source: local
     install:
       - kde-runtime-docs
       - kdenetwork-filesharing
