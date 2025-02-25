@@ -1,0 +1,58 @@
+# Module configuration, executed in order
+# You can include multiple instances of the same module
+modules:
+  - type: files
+    files:
+      - source: bluefin/system_files/shared/usr/bin
+        destination: /usr/bin
+      - source: bluefin/system_files/shared/usr/libexec
+        destination: /usr/libexec
+      - source: bluefin/system_files/shared/usr/lib/tmpfiles.d
+        destination: /usr/lib/tmpfiles.d
+      - source: bluefin/system_files/shared/usr/share/ublue-os/bluefin-cli
+        destination: /usr/share/ublue-os/bluefin-cli
+      - source: bluefin/system_files/shared/usr/share/ublue-os/homebrew
+        destination: /usr/share/ublue-os/homebrew
+      - source: bluefin/system_files/shared/usr/share/ublue-os/quadlets
+        destination: /usr/share/ublue-os/quadlets
+      - source: bluefin/system_files/shared/usr/share/ublue-os/ublue-os.jsonc
+        destination: /usr/share/ublue-os/ublue-os.jsonc
+      - source: bluefin/system_files/kinoite/usr/bin
+        destination: /usr/bin
+      - source: bluefin/system_files/kinoite/usr/share/applications
+        destination: /usr/share/applications
+      - source: bluefin/system_files/kinoite/usr/share/kglobalaccel
+        destination: /usr/share/kglobalaccel
+      - source: bluefin/system_files/dx
+        destination: /
+      - source: files/shared
+        destination: /
+      - source: files/kinoite
+        destination: /
+
+# Common steps between all versions
+  - from-file: common_recipe.yml
+
+# Install KDE Packages
+  - type: safe-rpm-ostree
+    source: local
+    install:
+      - kde-runtime-docs
+      - kdenetwork-filesharing
+      # - kdeplasma-addons # Already included in bazzite
+      - kdialog
+      - libadwaita-qt5
+      - libadwaita-qt6
+      - plasma-wallpapers-dynamic
+      - skanpage
+    remove:
+      - krfb
+      - krfb-libs
+      - plasma-welcome
+
+# Cleanup repos, etc...
+  - type: script
+    scripts:
+      - cleanup.sh
+
+  - type: signing # this sets up the proper policy & signing files for signed images to work fully

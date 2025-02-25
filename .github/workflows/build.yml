@@ -22,7 +22,9 @@ jobs:
       matrix:
         recipe:
           - bazzite-dx.yml
+          - bazzite-dx-nvidia.yml
           - bazzite-gnome-dx.yml
+          - bazzite-gnome-dx-nvidia.yml
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main

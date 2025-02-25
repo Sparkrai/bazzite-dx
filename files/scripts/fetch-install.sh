@@ -13,5 +13,9 @@ echo 'eval "$(starship init zsh)"' >> /etc/zshrc
 # Topgrade Install
 pip install --prefix=/usr topgrade
 
+# Install ublue-update -- breaks with packages.json disable staging to use bling.
+sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/ublue-os-staging-fedora-"${FEDORA_MAJOR_VERSION}".repo
+rpm-ostree install ublue-update
+
 # Consolidate Just Files
 find /tmp/files/just -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just
