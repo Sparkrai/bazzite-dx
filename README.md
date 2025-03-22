@@ -1,5 +1,8 @@
 # bazzite-dx &nbsp; [![build-ublue](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml/badge.svg)](https://github.com/sparkrai/bazzite-dx/actions/workflows/build.yml)
 
+> **Deprecated**
+> This project is deprecared in favor of the official Bazzite DX experience: https://github.com/ublue-os/bazzite-dx
+
 This is my custom Bazzite image that tries to add all the development capabilities from the Bluefin/Aurora DX images.
 It includes docker, podman, vscode, etc... to get you started coding with devcontainers faster as advertised by the Bluefin project.
 
